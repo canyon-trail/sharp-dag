@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="NodeEdgeMap.fs" />
+    <Compile Include="GraphNode.fs" />
+    <Compile Include="GraphNodeMap.fs" />
+    <Compile Include="Exceptions.fs" />
+    <Compile Include="DagClass.fs" />
+    <Compile Include="Dag.fs" />
+  </ItemGroup>
+
+</Project>
