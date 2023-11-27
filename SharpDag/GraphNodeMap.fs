@@ -5,7 +5,7 @@ type GraphNodeMap<
         when 'node : comparison
         and 'edge : comparison
     > private (mapIn) =
-    let map = mapIn
+    let map: Map<'node, GraphNode<'node, 'edge>> = mapIn
 
     let getNode node =
         map
@@ -21,13 +21,13 @@ type GraphNodeMap<
 
         GraphNodeMap(newMap)
 
-    let addEdge src dest =
+    let addEdge src dest edge =
         let srcNode =
             getNode src
-            |> GraphNode.addOutEdge dest ()
+            |> GraphNode.addOutEdge dest edge
         let destNode =
             getNode dest
-            |> GraphNode.addInEdge src ()
+            |> GraphNode.addInEdge src edge
 
         let newMap =
             map
@@ -77,28 +77,25 @@ type GraphNodeMap<
         parents
         |> Set.union extendedDescendants
 
-
     member this.Nodes =
         Map.keys map
         |> Set.ofSeq
 
     member this.Sources =
-        map
-        |> Map.values
+        Map.values map
         |> Seq.filter GraphNode.isSource
         |> Seq.map (fun n -> n.Key)
         |> Set.ofSeq
 
     member this.Sinks =
-        map
-        |> Map.values
+        Map.values map
         |> Seq.filter GraphNode.isSink
         |> Seq.map (fun n -> n.Key)
         |> Set.ofSeq
 
     member this.GetNode node = getNode node
     member this.AddNode node = addNode node
-    member this.AddEdge(src, dest) = addEdge src dest
+    member this.AddEdge(src, dest, edge) = addEdge src dest edge
     member this.RemoveNode node = removeNode node
     member this.RemoveNodes nodes =
         let mutable result = this

@@ -1,11 +1,15 @@
-﻿namespace SharpDag.Tests;
+﻿using Microsoft.FSharp.Core;
+
+namespace SharpDag.Tests;
+
+using SharpDag.CSharp;
 
 public class NodeListTests
 {
     [Fact]
     public void AcceptsSingleNode()
     {
-        var testee = Dag.fromNodes(new[] { "a" });
+        var testee = Dag<string, Unit>.FromNodes(new[] { "a" });
 
         testee.Nodes.Should().BeEquivalentTo(new[] { "a" });
     }
@@ -13,7 +17,7 @@ public class NodeListTests
     [Fact]
     public void AcceptsMultipleNodes()
     {
-        var testee = Dag.fromNodes(new[] { "a", "b" });
+        var testee = Dag<string, Unit>.FromNodes(new[] { "a", "b" });
 
         testee.Nodes.Should().BeEquivalentTo(new[] { "a", "b" });
     }
@@ -31,7 +35,7 @@ public class NodeListTests
             ("c", "d"),
         }
             .Select(x => x.ToTuple());
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         testee.Nodes.Should().BeEquivalentTo(new[] { "a", "b", "c", "d" });
     }

@@ -10,7 +10,7 @@ type NodeEdgeMap<
         when 'node : comparison
         and 'edge : comparison
     > private (edgeMapIn) =
-    let edgeMap = edgeMapIn
+    let edgeMap: Map<'node, Set<'edge>> = edgeMapIn
 
     member this.AddEdge (node, edge) =
         let edgeValues =

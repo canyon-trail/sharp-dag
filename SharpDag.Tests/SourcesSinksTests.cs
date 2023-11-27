@@ -1,11 +1,14 @@
-﻿namespace SharpDag.Tests;
+﻿using SharpDag.CSharp;
+
+namespace SharpDag.Tests;
+using Unit = Microsoft.FSharp.Core.Unit;
 
 public sealed class SourcesSinksTests
 {
     [Fact]
     public void TreatsIsolatedNodesAsSources()
     {
-        var testee = Dag.fromNodes(new[] { "a", "b", "c" });
+        var testee = Dag<string, Unit>.FromNodes(new[] { "a", "b", "c" });
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a", "b", "c" });
     }
@@ -13,7 +16,7 @@ public sealed class SourcesSinksTests
     [Fact]
     public void TreatsIsolatedNodesAsSinks()
     {
-        var testee = Dag.fromNodes(new[] { "a", "b", "c" });
+        var testee = Dag<string, Unit>.FromNodes(new[] { "a", "b", "c" });
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "a", "b", "c" });
     }
@@ -25,7 +28,7 @@ public sealed class SourcesSinksTests
         {
             ("a", "b")
         }.Select(x => x.ToTuple());
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a" });
     }
@@ -37,7 +40,7 @@ public sealed class SourcesSinksTests
         {
             ("a", "b")
         }.Select(x => x.ToTuple());
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "b" });
     }
@@ -60,7 +63,7 @@ public sealed class SourcesSinksTests
             ("b", "c"),
             ("d", "b"),
         }.Select(x => x.ToTuple());
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a", "d" });
     }
@@ -83,7 +86,7 @@ public sealed class SourcesSinksTests
             ("b", "c"),
             ("b", "d"),
         }.Select(x => x.ToTuple());
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "c", "d" });
     }

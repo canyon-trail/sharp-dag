@@ -1,4 +1,7 @@
-﻿namespace SharpDag.Tests;
+﻿using SharpDag.CSharp;
+using Unit = Microsoft.FSharp.Core.Unit;
+
+namespace SharpDag.Tests;
 using System.Linq;
 
 public sealed class TopologicalSortTests
@@ -6,7 +9,7 @@ public sealed class TopologicalSortTests
     [Fact]
     public void BaseCase()
     {
-        var testee = Dag.fromNodes(new[] { "a" });
+        var testee = Dag<string, Unit>.FromNodes(new[] { "a" });
 
         testee.TopologicalSort().Should().BeEquivalentTo(new [] { "a" });
     }
@@ -14,7 +17,7 @@ public sealed class TopologicalSortTests
     [Fact]
     public void SingleEdge()
     {
-        var testee = Dag.fromEdges(new[] {("a", "b").ToTuple()});
+        var testee = Dag<string, Unit>.FromUntypedEdges(new[] {("a", "b").ToTuple()});
 
         testee.TopologicalSort().Should().BeEquivalentTo(
             new[] { "a", "b" },
@@ -43,7 +46,7 @@ public sealed class TopologicalSortTests
             ("c", "d"),
         }.Select(x => x.ToTuple());
 
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
         result.Take(3).Should().BeEquivalentTo(new[] { "a", "b", "c" });
@@ -71,7 +74,7 @@ public sealed class TopologicalSortTests
             ("a", "d"),
         }.Select(x => x.ToTuple());
 
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
         result.Skip(1).Should().BeEquivalentTo(new[] { "b", "c", "d" });
@@ -101,7 +104,7 @@ public sealed class TopologicalSortTests
             ("d", "e"),
         }.Select(x => x.ToTuple());
 
-        var testee = Dag.fromEdges(edges);
+        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
 

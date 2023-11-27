@@ -10,8 +10,8 @@
     <Compile Include="GraphNode.fs" />
     <Compile Include="GraphNodeMap.fs" />
     <Compile Include="Exceptions.fs" />
-    <Compile Include="DagClass.fs" />
-    <Compile Include="Dag.fs" />
+    <Compile Include="FSharp.fs" />
+    <Compile Include="CSharp.fs" />
   </ItemGroup>
 
 </Project>
