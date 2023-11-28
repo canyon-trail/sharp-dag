@@ -1,14 +1,13 @@
 ﻿using SharpDag.CSharp;
 
 namespace SharpDag.Tests;
-using Unit = Microsoft.FSharp.Core.Unit;
 
 public sealed class SourcesSinksTests
 {
     [Fact]
     public void TreatsIsolatedNodesAsSources()
     {
-        var testee = Dag<string, Unit>.FromNodes(new[] { "a", "b", "c" });
+        var testee = Dag.FromNodes(new[] { "a", "b", "c" });
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a", "b", "c" });
     }
@@ -16,7 +15,7 @@ public sealed class SourcesSinksTests
     [Fact]
     public void TreatsIsolatedNodesAsSinks()
     {
-        var testee = Dag<string, Unit>.FromNodes(new[] { "a", "b", "c" });
+        var testee = Dag.FromNodes(new[] { "a", "b", "c" });
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "a", "b", "c" });
     }
@@ -26,9 +25,9 @@ public sealed class SourcesSinksTests
     {
         var edges = new[]
         {
-            ("a", "b")
-        }.Select(x => x.ToTuple());
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+            Edge.Untyped("a", "b")
+        };
+        var testee = Dag.FromUntypedEdges(edges);
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a" });
     }
@@ -38,9 +37,9 @@ public sealed class SourcesSinksTests
     {
         var edges = new[]
         {
-            ("a", "b")
-        }.Select(x => x.ToTuple());
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+            Edge.Untyped("a", "b")
+        };
+        var testee = Dag.FromUntypedEdges(edges);
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "b" });
     }
@@ -59,11 +58,11 @@ public sealed class SourcesSinksTests
          */
         var edges = new[]
         {
-            ("a", "b"),
-            ("b", "c"),
-            ("d", "b"),
-        }.Select(x => x.ToTuple());
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("b", "c"),
+            Edge.Untyped("d", "b"),
+        };
+        var testee = Dag.FromUntypedEdges(edges);
 
         testee.Sources.Should().BeEquivalentTo(new[] { "a", "d" });
     }
@@ -82,11 +81,11 @@ public sealed class SourcesSinksTests
          */
         var edges = new[]
         {
-            ("a", "b"),
-            ("b", "c"),
-            ("b", "d"),
-        }.Select(x => x.ToTuple());
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("b", "c"),
+            Edge.Untyped("b", "d"),
+        };
+        var testee = Dag.FromUntypedEdges(edges);
 
         testee.Sinks.Should().BeEquivalentTo(new[] { "c", "d" });
     }

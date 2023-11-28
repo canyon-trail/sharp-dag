@@ -1,5 +1,4 @@
 ﻿using SharpDag.CSharp;
-using Unit = Microsoft.FSharp.Core.Unit;
 
 namespace SharpDag.Tests;
 using System.Linq;
@@ -9,7 +8,7 @@ public sealed class TopologicalSortTests
     [Fact]
     public void BaseCase()
     {
-        var testee = Dag<string, Unit>.FromNodes(new[] { "a" });
+        var testee = Dag.FromNodes(new[] { "a" });
 
         testee.TopologicalSort().Should().BeEquivalentTo(new [] { "a" });
     }
@@ -17,7 +16,7 @@ public sealed class TopologicalSortTests
     [Fact]
     public void SingleEdge()
     {
-        var testee = Dag<string, Unit>.FromUntypedEdges(new[] {("a", "b").ToTuple()});
+        var testee = Dag.FromUntypedEdges(new[] { Edge.Untyped("a", "b") });
 
         testee.TopologicalSort().Should().BeEquivalentTo(
             new[] { "a", "b" },
@@ -41,12 +40,12 @@ public sealed class TopologicalSortTests
 
         var edges = new[]
         {
-            ("a", "d"),
-            ("b", "d"),
-            ("c", "d"),
-        }.Select(x => x.ToTuple());
+            Edge.Untyped("a", "d"),
+            Edge.Untyped("b", "d"),
+            Edge.Untyped("c", "d"),
+        };
 
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+        var testee = Dag.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
         result.Take(3).Should().BeEquivalentTo(new[] { "a", "b", "c" });
@@ -69,12 +68,12 @@ public sealed class TopologicalSortTests
 
         var edges = new[]
         {
-            ("a", "b"),
-            ("a", "c"),
-            ("a", "d"),
-        }.Select(x => x.ToTuple());
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("a", "c"),
+            Edge.Untyped("a", "d"),
+        };
 
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+        var testee = Dag.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
         result.Skip(1).Should().BeEquivalentTo(new[] { "b", "c", "d" });
@@ -97,14 +96,14 @@ public sealed class TopologicalSortTests
 
         var edges = new[]
         {
-            ("a", "b"),
-            ("a", "c"),
-            ("a", "d"),
-            ("b", "c"),
-            ("d", "e"),
-        }.Select(x => x.ToTuple());
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("a", "c"),
+            Edge.Untyped("a", "d"),
+            Edge.Untyped("b", "c"),
+            Edge.Untyped("d", "e"),
+        };
 
-        var testee = Dag<string, Unit>.FromUntypedEdges(edges);
+        var testee = Dag.FromUntypedEdges(edges);
 
         var result = testee.TopologicalSort().ToList();
 

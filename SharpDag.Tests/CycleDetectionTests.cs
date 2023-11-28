@@ -1,5 +1,4 @@
 using SharpDag.CSharp;
-using Unit = Microsoft.FSharp.Core.Unit;
 
 namespace SharpDag.Tests;
 
@@ -14,7 +13,10 @@ public sealed class CycleDetectionTests
             ^    |
             |____|
          */
-        ExpectCycle(("a", "b"), ("b", "a"));
+        ExpectCycle(
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("b", "a")
+            );
     }
 
     [Fact]
@@ -25,7 +27,7 @@ public sealed class CycleDetectionTests
             ^    |
             |____|
          */
-        ExpectCycle(("a", "a"));
+        ExpectCycle(Edge.Untyped("a", "a"));
     }
 
     [Fact]
@@ -37,22 +39,16 @@ public sealed class CycleDetectionTests
             |_________|
          */
         ExpectCycle(
-            ("a", "b"),
-            ("b", "c"),
-            ("c", "a")
+            Edge.Untyped("a", "b"),
+            Edge.Untyped("b", "c"),
+            Edge.Untyped("c", "a")
             );
     }
 
-    private void ExpectCycle<T>(params (T, T)[] edges)
+    private void ExpectCycle<T>(params UntypedEdge<T>[] edges)
         where T : IComparable
     {
-        Tuple<T, T> ToEdgeTuple((T, T) edge)
-        {
-            var (a, b) = edge;
-
-            return Tuple.Create(a, b);
-        }
-        new Action(() => Dag<T, Unit>.FromUntypedEdges(edges.Select(ToEdgeTuple)))
+        new Action(() => Dag.FromUntypedEdges(edges))
             .Should().Throw<Exceptions.DagCycleException>();
     }
 
