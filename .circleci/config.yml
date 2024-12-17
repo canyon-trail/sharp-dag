@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
-    executor: docker
     steps:
       - checkout
       - run:
@@ -13,7 +12,6 @@ jobs:
   publish:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
-    executor: docker
     steps:
       - checkout
       - run:
