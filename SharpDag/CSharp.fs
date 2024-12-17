@@ -81,11 +81,11 @@ type Dag<
     /// Returns nodes in a topological ordering.
     member this.TopologicalSort() = dag.TopologicalSort()
     /// Returns a new Dag with the given nodes removed
-    member this.RemoveNodes(nodes) = dag.RemoveNodes nodes
+    member this.RemoveNodes(nodes) = Dag(dag.RemoveNodes nodes)
     /// Returns a new Dag with the given node removed
     member this.RemoveNode(node) =
         let nodes = Seq.singleton node
-        dag.RemoveNodes nodes
+        Dag(dag.RemoveNodes nodes)
     /// Gets an empty Dag.
     static member Empty = Dag(FSDag<'node, 'edge>.Empty)
     /// Constructs a Dag from a collection of nodes.
